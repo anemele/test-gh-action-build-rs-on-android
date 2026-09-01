@@ -15,12 +15,16 @@ jobs:
     runs-on: ubuntu-latest
                     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         target: aarch64-linux-android
     - name: run
       run: |
-        cargo build --verbose
-        cargo run list
-        cargo run download 鲁班七号
+        cargo build --release
+        ./target/release/rs list
+        ./target/release/rs download 鲁班七号
+    - uses: actions/upload-artifact@v7
+      with:
+        path:
+          ./target/release/rs
