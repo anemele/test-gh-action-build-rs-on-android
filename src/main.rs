@@ -29,11 +29,16 @@ fn main() {
 
     match cmd {
         List => {
-            dbg!(herolist);
+            println!("{:#?}", herolist);
         }
         Download { name } => {
-            let hero = herolist.iter().find(|h| h.cname == name).unwrap();
-            dbg!(hero);
+            let hero = herolist
+                .iter()
+                .find(|h| h.cname == name || h.title == name)
+                .unwrap();
+            println!("found: {}-{}", hero.title, hero.cname);
+            println!("visit by id_name:{} or ename:{}", hero.id_name, hero.ename);
+            println!("skins: {}", hero.skin_name);
         }
     }
 }
