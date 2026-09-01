@@ -21,6 +21,6 @@ jobs:
         target: aarch64-linux-android
     - name: run
       run: |
-           | cargo build --verbose
-           | cargo run list
-           | cargo run download 鲁班七号
+        cargo build --verbose
+        cargo run list
+        cargo run download 鲁班七号
