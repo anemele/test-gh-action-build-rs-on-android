@@ -21,6 +21,14 @@ jobs:
         target: aarch64-linux-android
     - name: install.ndk
       run: cargo install cargo-ndk
+    - name: Install apt system libs
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+        libssh2-dev \
+        openssh-client \
+        pkg-config \
+        libssl-dev
     - name: build and run
       run: |
         cargo ndk --target aarch64-linux-android --platform 24 build --release
