@@ -21,15 +21,12 @@ jobs:
         target: aarch64-linux-android
     - name: install.ndk
       run: cargo install cargo-ndk
+    - name: test run
+      run: |
+        cargo run list
+        cargo run download 鲁班七号
     - name: build
       run: cargo ndk --target aarch64-linux-android --platform 24 build --release
-    - name: run
-      run: |
-        pushd ./target/aarch64-linux-android/release
-        ./rs list
-        ./rs download 鲁班七号
-        tar -czf ../../../rs.tar.gz ./rs
-        popd
     - name: tar gz
       run: |
         pushd ./target/aarch64-linux-android/release
