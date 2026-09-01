@@ -10,6 +10,16 @@ struct Hero {
     skin_name: String,
 }
 
+fn visit(hero: &Hero) -> String {
+    format!(
+        r#"\
+found: {}-{}
+visit by id_name:{} or ename:{}
+skins: {}"#,
+        hero.title, hero.cname, hero.id_name, hero.ename, hero.skin_name,
+    )
+}
+
 type HeroList = Vec<Hero>;
 
 #[derive(Parser)]
@@ -24,8 +34,13 @@ fn main() {
     use Cli::*;
     let cmd = Cli::parse();
 
-    let resp = tinyget::get(HEROLIST_URL).send().unwrap();
-    let herolist = serde_json::from_slice::<HeroList>(resp.as_bytes()).unwrap();
+    let bs = ureq::get(HEROLIST_URL)
+        .call()
+        .unwrap()
+        .body_mut()
+        .read_to_vec()
+        .unwrap();
+    let herolist = serde_json::from_slice::<HeroList>(bs.as_slice()).unwrap();
 
     match cmd {
         List => {
@@ -36,9 +51,7 @@ fn main() {
                 .iter()
                 .find(|h| h.cname == name || h.title == name)
                 .unwrap();
-            println!("found: {}-{}", hero.title, hero.cname);
-            println!("visit by id_name:{} or ename:{}", hero.id_name, hero.ename);
-            println!("skins: {}", hero.skin_name);
+            println!("{}", visit(hero))
         }
     }
 }
